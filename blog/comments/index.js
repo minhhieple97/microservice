@@ -15,7 +15,7 @@ app.post("/posts/:id/comments", (req, res) => {
   const comments = commentsByPostId[req.params.id] || [];
   comments.push({ id: commentId, content });
   commentsByPostId[req.params.id] = comments;
-  axios.post("http://localhost:4003/events", {
+  axios.post("http://localhost:8080/events", {
     type: "COMMENTCREATED",
     data: {
       id: commentId,
@@ -33,6 +33,6 @@ app.post("/events", (req, res) => {
     console.log(error);
   }
 });
-app.listen(4001, () => {
-  console.log("Listening on 4001");
+app.listen(4000, () => {
+  console.log("Listening Comments on 4000");
 });

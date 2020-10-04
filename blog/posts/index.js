@@ -17,7 +17,7 @@ app.post("/posts", (req, res) => {
       id,
       title,
     };
-    axios.post("http://localhost:4003/events", {
+    axios.post("http://localhost:8080/events", {
       type: "POSTCREATED",
       data: {
         id,
@@ -35,6 +35,6 @@ app.post("/events", (req, res) => {
     console.log(error);
   }
 });
-app.listen(4000, () => {
-  console.log("Listening on 4000");
+app.listen(4001, () => {
+  console.log("Listening Posts on 4001");
 });
