@@ -8,24 +8,36 @@ app.get("/posts", (req, res) => {
   res.send(posts);
 });
 app.post("/events", (req, res) => {
-  const { type, data } = req.body;
-  switch (type) {
-    case "COMMENTCREATED":
-      {
-        const { id, content, postId } = data;
-        posts[postId].comments.push({ id, content });
-      }
-      break;
-    case "POSTCREATED":
-      {
-        const { id, title } = data;
-        posts[id] = { id, title, comments: [] };
-      }
-      break;
-    default:
-      break;
+  try {
+    const { type, data } = req.body;
+    switch (type) {
+      case "COMMENTCREATED":
+        {
+          const { id, content, postId, status } = data;
+          posts[postId].comments.push({ id, content, status });
+        }
+        break;
+      case "POSTCREATED":
+        {
+          const { id, title } = data;
+          posts[id] = { id, title, comments: [] };
+        }
+        break;
+      case "COMMENTUPDATED":
+        {
+          const { id, postId, status, content } = data;
+          const comments = posts[postId].comments;
+          const comment = comments.find((comment) => comment.id === id);
+          comment.status = status;
+        }
+        break;
+      default:
+        break;
+    }
+    res.status(200).json({ message: "success" });
+  } catch (error) {
+    console.log(error);
   }
-  res.status(200).json({ message: "success" });
 });
 app.listen(4002, () => {
   console.log("Listening Query on 4002");

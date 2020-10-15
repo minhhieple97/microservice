@@ -1,36 +1,34 @@
 const express = require("express");
-const { randomBytes } = require("crypto");
-const axios = require("axios");
 const app = express();
+const axios = require("axios");
 app.use(express.json());
-const commentsByPostId = {};
-app.get("/posts/:id/comments", (req, res) => {
-  res.send(commentsByPostId[req.params.id] || []);
-});
-app.post("/posts/:id/comments", (req, res) => {
-  const commentId = randomBytes(4).toString("hex");
-  const { content } = req.body;
-  const comments = commentsByPostId[req.params.id] || [];
-  comments.push({ id: commentId, content });
-  commentsByPostId[req.params.id] = comments;
-  axios.post("http://localhost:8080/events", {
-    type: "COMMENTCREATED",
-    data: {
-      id: commentId,
-      content,
-      postId: req.params.id,
-    },
-  });
-  res.status(201).send(comments);
-});
-app.post("/events", (req, res) => {
-  try {
-    console.log("Received event", req.body);
-    res.send({ status: "OK" });
-  } catch (error) {
-    console.log(error);
+// const posts = {};
+app.post("/events", async (req, res) => {
+  const { type, data } = req.body;
+  switch (type) {
+    case "COMMENTCREATED":
+      {
+        const { id, postId, content } = data;
+        const status = data.content.includes("orange")
+          ? "rejected"
+          : "approved";
+        await axios.post("http://localhost:8080/events", {
+          type: "COMMENTMODERATED",
+          data: {
+            id,
+            content,
+            postId,
+            status,
+          },
+        });
+        // posts[postId].comments.push({ ...data });
+      }
+      break;
+    default:
+      break;
   }
+  res.status(200).json({ message: "success" });
 });
 app.listen(4003, () => {
-  console.log("Listening Moderation on 4003");
+  console.log("Listening moderation service on 4003");
 });
