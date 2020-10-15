@@ -1,10 +1,12 @@
 const axios = require("axios");
 const express = require("express");
 const app = express();
+const events = [];
 app.use(express.json());
 app.post("/events", (req, res) => {
   try {
     const event = req.body;
+    events.push(event);
     axios.post("http://localhost:4000/events", event); //comment
     axios.post("http://localhost:4001/events", event); // posts
     axios.post("http://localhost:4002/events", event); // query
@@ -16,4 +18,7 @@ app.post("/events", (req, res) => {
 });
 app.listen(8080, () => {
   console.log("Listening Event Bus on 8080");
+});
+app.get("/events", (req, res) => {
+  res.send(events);
 });
