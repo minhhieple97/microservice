@@ -1,7 +1,8 @@
 apiVersion: v1
 # apiVersion sẽ chỉ định tập hợp các đối tượng mà chúng ta sẽ sử dụng, với mỗi apiVerison của K8s chúng ta sẽ có những tập hợp khác nhau khai báo cho kubernetes xem chúng ta muốn dùng Object nào (Pod,Service,)
 kind: Pod
-metadata:
+# Loại của đối tượng mà chúng ta muốn tạo
+metadata: # Các option của object mà chúng ta muốn config
   name: posts
 spec:
   containers:
