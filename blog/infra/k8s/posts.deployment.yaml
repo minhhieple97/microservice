@@ -11,3 +11,7 @@ spec:
     metadata:
       labels:
         app: posts
+    spec: 
+      containers:
+        - name: posts
+          image: hieple/posts
