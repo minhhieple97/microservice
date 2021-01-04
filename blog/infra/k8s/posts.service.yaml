@@ -1,0 +1,16 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: posts-service
+spec:
+  type: NodePort
+  selector:
+    # Khai báo của Service, bất kì pod nào có lable match với label của Service sẽ được expose
+    app: posts
+  ports:
+    # Service cần phải biết traffic sẽ được redirect đến port nào của container, gỉa sử container expose port 4000 => targetPort=4000
+    # Trên Service chúng ta cũng phải open một port để  nhận traffic => port=4000, port và targetPort không nhất thiết phải giống nhau, hiểu đơn giản port là nơi tiếp nhận (đầu vào) còn targetPort là đầu ra
+    - name: posts
+      protocol: TCP
+      port: 4001
+      targetPort: 4001

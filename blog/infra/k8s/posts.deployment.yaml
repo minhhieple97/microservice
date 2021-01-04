@@ -1,0 +1,23 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: posts-deployment
+#  Spec là thứ chỉ định chính xác Object sẽ hoạt động như thế nào.
+spec:
+  #  Replicas là thứ chỉ định số lượng pod được tạo ra để chạy 1 image cụ thể
+  #  Deploymet cần thông tin của những pơd mà nó sẽ quản lý
+  replicas: 1
+  selector:
+    matchLabels:
+      #   Đây chính là lable của Deployment, có thể đặt tùy ý (component:posts,label:posts) nó giúp Deployment tìm các pods có lable match
+      app: posts
+    #   Hiểu đơn giản template chính là nơi config các pod mà deplyment quản lý.
+  template:
+    metadata:
+      # Bất kì pod nào có lable match với lable của deployment sẽ được gom vào để deployment quản lý.
+      labels:
+        app: posts
+    spec:
+      containers:
+        - name: posts
+          image: hieple/posts
