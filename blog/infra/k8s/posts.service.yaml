@@ -12,5 +12,6 @@ spec:
     # Trên Service chúng ta cũng phải open một port để  nhận traffic => port=4000, port và targetPort không nhất thiết phải giống nhau, hiểu đơn giản port là nơi tiếp nhận (đầu vào) còn targetPort là đầu ra
     - name: posts
       protocol: TCP
+      nodePort: 30800
       port: 4001
       targetPort: 4001
