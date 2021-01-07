@@ -1,0 +1,33 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: comments-deployment
+#  Spec là thứ chỉ định chính xác Object sẽ hoạt động như thế nào.
+spec:
+  #  Replicas là thứ chỉ định số lượng pod được tạo ra để chạy 1 image cụ thể
+  #  Deploymet cần thông tin của những pơd mà nó sẽ quản lý
+  replicas: 1
+  selector:
+    matchLabels:
+      app: comments
+  template:
+    metadata:
+      labels:
+        app: comments
+    spec:
+      containers:
+        - name: comments
+          image: hieple/comments
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: comments-service
+spec:
+  selector:
+    app: comment
+  ports:
+    - name: comments
+      protocol: TCP
+      port: 4000
+      targetPort: 4000

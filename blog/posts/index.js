@@ -17,7 +17,7 @@ app.post("/posts", (req, res) => {
       id,
       title,
     };
-    axios.post("http://localhost:8080/events", {
+    axios.post("http://event-bus-service:8080/events", {
       type: "POSTCREATED",
       data: {
         id,

@@ -7,10 +7,10 @@ app.post("/events", (req, res) => {
   try {
     const event = req.body;
     events.push(event);
-    axios.post("http://localhost:4000/events", event); //comment
-    axios.post("http://localhost:4001/events", event); // posts
-    axios.post("http://localhost:4002/events", event); // query
-    axios.post("http://localhost:4003/events", event); // moderation
+    axios.post("http://comments-service:4000/events", event); //comment
+    axios.post("http://posts-cluster-ip-services:4001/events", event); // posts
+    axios.post("http://query-deployment:4002/events", event); // query
+    axios.post("http://moderation-service:4003/events", event); // moderation
     res.send({ status: 200, message: "success" });
   } catch (error) {
     console.log(error);

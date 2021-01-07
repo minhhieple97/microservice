@@ -1,0 +1,33 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: query-deployment
+#  Spec là thứ chỉ định chính xác Object sẽ hoạt động như thế nào.
+spec:
+  #  Replicas là thứ chỉ định số lượng pod được tạo ra để chạy 1 image cụ thể
+  #  Deploymet cần thông tin của những pơd mà nó sẽ quản lý
+  replicas: 1
+  selector:
+    matchLabels:
+      app: query
+  template:
+    metadata:
+      labels:
+        app: query
+    spec:
+      containers:
+        - name: query
+          image: hieple/query
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: query-service
+spec:
+  selector:
+    app: query
+  ports:
+    - name: query
+      protocol: TCP
+      port: 4002
+      targetPort: 4002
