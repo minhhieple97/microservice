@@ -6,6 +6,7 @@ app.use(express.json());
 app.post("/events", (req, res) => {
   try {
     const event = req.body;
+    console.log({ event });
     events.push(event);
     axios.post("http://comments-service:4000/events", event); //comment
     axios.post("http://posts-cluster-ip-services:4001/events", event); // posts
@@ -14,6 +15,7 @@ app.post("/events", (req, res) => {
     res.send({ status: 200, message: "success" });
   } catch (error) {
     console.log(error);
+    res.status(400).json({ error: error.message });
   }
 });
 app.listen(8080, () => {

@@ -1,16 +1,43 @@
-apiVersion: networking.k8s.io/v1beta1
+apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   name: ingress-service
   annotations:
     kubernetes.io/ingress.class: nginx
+    nginx.ingress.kubernetes.io/use-regex: "true"
 spec:
   rules:
     - host: posts.com
-    - http:
+      http:
         paths:
+          - path: /posts/create
+            pathType: Prefix
+            backend:
+              service:
+                name: posts-cluster-ip-services
+                port:
+                  number: 4001
+
           - path: /posts
-          - backend:
-              serviceName: posts-cluster-ip-services
-              servicePort: 4001
-# kubectl apply -f ingress.service.yaml
+            pathType: Prefix
+            backend:
+              service:
+                name: query-service
+                port:
+                  number: 4002
+
+          - path: /posts/?(.*)/comments
+            pathType: Prefix
+            backend:
+              service:
+                name: comments-service
+                port:
+                  number: 4000
+                  
+          - path: /?(.*)
+            pathType: Prefix
+            backend:
+              service:
+                name: client-service
+                port:
+                  number: 3000
